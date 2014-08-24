@@ -1,7 +1,6 @@
 DeriveTidy1 <- function(dataRootDir = "UCI HAR Dataset") {
-  # utility function
   FilePath <- function(file) {
-    paste(dataRootDir,"/",file,sep="")
+  paste(dataRootDir,"/",file,sep="")
   }
   # file locations
   XTestFile <- FilePath("test/X_test.txt")
@@ -21,7 +20,7 @@ DeriveTidy1 <- function(dataRootDir = "UCI HAR Dataset") {
   colnames(allObservations) <- featureNames
   #columns that have mean, std or activityLabel in their name
   allObservations <- allObservations[,grep("mean|std|activityLabel",featureNames)]
-  #rename variable names to more readable form.
+  #Start getting tidy.
   varNames = names(allObservations)
   varNames <- gsub(pattern="^t",replacement="time",x=varNames)
   varNames <- gsub(pattern="^f",replacement="freq",x=varNames)
@@ -37,7 +36,7 @@ DeriveTidy1 <- function(dataRootDir = "UCI HAR Dataset") {
   testActivities <- read.table(TestActivitiesFile,stringsAsFactors=FALSE)
   trainingActivities <- read.table(TrainActivitiesFile,stringsAsFactors=FALSE)
   allActivities <- rbind(testActivities,trainingActivities)
-  #assign a column name so we can merge on it
+  #assign a column name for merging
   colnames(allActivities)[1] <- "activityID"
   activities <- join(allActivities,activityLabels,by="activityID")
   #and add the column to the entire dataset
